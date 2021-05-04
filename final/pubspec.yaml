@@ -7,7 +7,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.15.6
+  intl: ^0.17.0
+  firebase_core: ^1.0.0
+  cloud_firestore: ^1.0.0
+  firebase_auth: ^1.1.0
+  google_sign_in: ^4.5.1
 
   cupertino_icons: ^0.1.0
   shrine_images: 1.1.1

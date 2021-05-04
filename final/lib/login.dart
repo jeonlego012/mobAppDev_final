@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -39,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             SizedBox(height: 120.0),
-            // TODO: Wrap Username with AccentColorOverride (103)
-            // TODO: Remove filled: true values (103)
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
@@ -49,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 12.0),
-            // TODO: Wrap Password with AccentColorOverride (103)
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
@@ -60,7 +58,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ButtonBar(
               children: <Widget>[
-                // TODO: Add a beveled rectangular border to CANCEL (103)
                 FlatButton(
                   child: Text('CANCEL'),
                   onPressed: () {
@@ -68,8 +65,6 @@ class _LoginPageState extends State<LoginPage> {
                     _passwordController.clear();
                   },
                 ),
-                // TODO: Add an elevation to NEXT (103)
-                // TODO: Add a beveled rectangular border to NEXT (103)
                 RaisedButton(
                   child: Text('NEXT'),
                   onPressed: () {
@@ -85,4 +80,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-// TODO: Add AccentColorOverride (103)
+// Future<UserCredential> signInWithGoogle() async {
+//   final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+//   final GoogleSignInAuthentication googleAuth = await googleUser.authenticaiton;
+
+// }
