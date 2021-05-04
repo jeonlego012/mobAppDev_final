@@ -1,0 +1,2 @@
+final/build/ios/Debug-iphonesimulator/Runner.app/Runner filter=lfs diff=lfs merge=lfs -text
+final/build/ios/Debug-iphonesimulator/gRPC-Core/libgRPC-Core.a filter=lfs diff=lfs merge=lfs -text

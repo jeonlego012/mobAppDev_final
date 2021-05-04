@@ -1,0 +1,2 @@
+final/build/ios/Debug-iphonesimulator/FirebaseFirestore/libFirebaseFirestore.a filter=lfs diff=lfs merge=lfs -text
+.git/objects/pack/pack-483a2617370c8bbd02af7869347c841797b9ad8e.pack filter=lfs diff=lfs merge=lfs -text
