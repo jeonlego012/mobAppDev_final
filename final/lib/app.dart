@@ -35,7 +35,7 @@ class ShrineApp extends StatelessWidget {
 
     return MaterialPageRoute<void>(
       settings: settings,
-      builder: (BuildContext context) => LoginPage(),
+      builder: (BuildContext context) => SignInDemo(),
       fullscreenDialog: true,
     );
   }
