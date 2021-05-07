@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,10 +31,11 @@ class _LoginPageState extends State<LoginPage> {
       if (user == null) {
         print('User is currently signed out!');
       } else {
-        Navigator.pop(context);
         print('User is signed in!');
+        Navigator.pushNamed(context, '/item');
       }
     });
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -47,9 +49,26 @@ class _LoginPageState extends State<LoginPage> {
                 Text('SHRINE'),
               ],
             ),
-            TextButton(
-              onPressed: () => signInWithGoogle(),
-              child: Text('Google Login'),
+            Container(
+              padding: EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 5.0),
+              child: GoogleSignInButton(
+                centered: true,
+                onPressed: () => signInWithGoogle(),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 10.0),
+              child: RaisedButton(
+                onPressed: () => signInAnonymously(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Guest',
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -68,4 +87,9 @@ Future<UserCredential> signInWithGoogle() async {
   );
 
   return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
+Future<void> signInAnonymously() async {
+  UserCredential userCredential =
+      await FirebaseAuth.instance.signInAnonymously();
 }

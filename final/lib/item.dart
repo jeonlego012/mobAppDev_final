@@ -20,7 +20,7 @@ import 'model/products_repository.dart';
 import 'model/product.dart';
 import 'login.dart';
 
-class HomePage extends StatelessWidget {
+class ItemPage extends StatelessWidget {
   List<Card> _buildGridCards(BuildContext context) {
     List<Product> products = ProductsRepository.loadProducts(Category.all);
 
@@ -99,6 +99,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               print('Search button');
               signOut();
+              Navigator.pop(context);
             },
           ),
           IconButton(
@@ -123,4 +124,8 @@ class HomePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
     );
   }
+}
+
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
 }

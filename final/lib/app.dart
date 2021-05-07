@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'item.dart';
 import 'login.dart';
 
 class ShrineApp extends StatelessWidget {
@@ -22,13 +22,16 @@ class ShrineApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shrine',
-      home: HomePage(),
-      initialRoute: '/login',
-      onGenerateRoute: _getRoute,
+      home: LoginPage(),
+      //initialRoute: '/login',
+      //onGenerateRoute: _getRoute,
+      routes: {
+        '/item': (context) => ItemPage(),
+      },
     );
   }
 
-  Route<dynamic> _getRoute(RouteSettings settings) {
+  /*Route<dynamic> _getRoute(RouteSettings settings) {
     if (settings.name != '/login') {
       return null;
     }
@@ -38,5 +41,5 @@ class ShrineApp extends StatelessWidget {
       builder: (BuildContext context) => LoginPage(),
       fullscreenDialog: true,
     );
-  }
+  }*/
 }

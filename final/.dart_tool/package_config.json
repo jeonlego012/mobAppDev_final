@@ -110,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_auth_buttons",
+      "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_auth_buttons-0.10.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/jeon-yeong-won/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -136,12 +142,6 @@
     {
       "name": "google_sign_in_web",
       "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "http",
-      "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -178,12 +178,6 @@
     {
       "name": "path",
       "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "pedantic",
-      "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -266,7 +260,7 @@
       "languageVersion": "2.10"
     }
   ],
-  "generated": "2021-05-05T14:09:15.888155Z",
+  "generated": "2021-05-07T12:17:12.358527Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }
