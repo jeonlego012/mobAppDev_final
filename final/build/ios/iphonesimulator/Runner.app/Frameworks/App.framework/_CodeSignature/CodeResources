@@ -10,15 +10,15 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		rIUc32my5HeF9uGwMLN+FxdeNAs=
+		Vs05WYXzKzQOo5vqg+XSKegUsrg=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
-		vKJkVIcw+LGHFnKJGwrQwCREv68=
+		qJAdP0QoNuKo8swAmd3qp1oqQPI=
 		</data>
 		<key>flutter_assets/NOTICES</key>
 		<data>
-		YLbLm5ptb5WuniKVuaJgYZo623M=
+		TDmhuHkFG6d0TcerVKrzgV0IfuM=
 		</data>
 		<key>flutter_assets/assets/2.0x/diamond.png</key>
 		<data>
@@ -42,11 +42,43 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		AsPPRbg/pnTSYFVCJ4JIWo3ATmc=
+		b5BKNH8As/+h8jgqGg82Qj4qzNk=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
 		TdRNbRcrlXQQgeiweLFizPmk92g=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/fonts/Roboto-Medium.ttf</key>
+		<data>
+		Xxb01tu0pPEtiulkiKwgm7SXYqU=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/fonts/SF-Pro-Medium.ttf</key>
+		<data>
+		YvOd+ZBqVtyE1oyvKZaUBBPlVSU=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/Twitter_Logo_Blue.png</key>
+		<data>
+		rMNklGB3sOMrI0NHTOQGatPuUkw=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/apple_logo_black.png</key>
+		<data>
+		hV4KtPsC4p4RN3RWIhsbyIsJuyE=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/apple_logo_white.png</key>
+		<data>
+		Z1cA5iWnN7dRh/jnCdZqSfTZyyE=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/flogo-HexRBG-Wht-100.png</key>
+		<data>
+		NdUqG6cncjVMJuSBqUJotF7e/pk=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/google-logo.png</key>
+		<data>
+		h2E0TeHHYPhONN594Q8v22ArPkQ=
+		</data>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/ms-symbollockup_mssymbol_19.png</key>
+		<data>
+		KPdxpU2HVwUFjutZQdp2JAHArLk=
 		</data>
 		<key>flutter_assets/packages/shrine_images/0-0.jpg</key>
 		<data>
@@ -515,33 +547,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rIUc32my5HeF9uGwMLN+FxdeNAs=
+			Vs05WYXzKzQOo5vqg+XSKegUsrg=
 			</data>
 			<key>hash2</key>
 			<data>
-			3EuuzTfPGX3f8rQ0K+Izk3TBfSrbvjxC7XdUgYo1aVs=
+			tpNpTnPgvCPZJr0P+nvuS0Eg/mKIB+vsSLbqE/I6tpE=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vKJkVIcw+LGHFnKJGwrQwCREv68=
+			qJAdP0QoNuKo8swAmd3qp1oqQPI=
 			</data>
 			<key>hash2</key>
 			<data>
-			zX4DZFvESy3Ue3y2JvUcTsv1Whl6t3JBYotHrBZfviE=
+			NK5AvJuf+zNh3+ATx8YfEIp7osPU2NCAWhN1mXtQ+TU=
 			</data>
 		</dict>
 		<key>flutter_assets/NOTICES</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			YLbLm5ptb5WuniKVuaJgYZo623M=
+			TDmhuHkFG6d0TcerVKrzgV0IfuM=
 			</data>
 			<key>hash2</key>
 			<data>
-			oaa1PTvc4oI6KZ7lfiuItdOQBh+2CLwsLv0WTX7/wL0=
+			hrkqmUdZpsY4QPXheRCVntMpnwp8y78/KVfZ+X/EQFE=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/2.0x/diamond.png</key>
@@ -603,11 +635,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			AsPPRbg/pnTSYFVCJ4JIWo3ATmc=
+			b5BKNH8As/+h8jgqGg82Qj4qzNk=
 			</data>
 			<key>hash2</key>
 			<data>
-			frrOgLotJnoNIrEyG/mhkv0+8RUA26wEGVpKUUMSF64=
+			dm+m1HmWb0KDDCoNrCbJUqr72QNEIpNdOS1KoSO8uho=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
@@ -619,6 +651,94 @@
 			<key>hash2</key>
 			<data>
 			d6fK2iHuml40zu1xSV3HnoE9PVFhQREGOzVfduySSBY=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/fonts/Roboto-Medium.ttf</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Xxb01tu0pPEtiulkiKwgm7SXYqU=
+			</data>
+			<key>hash2</key>
+			<data>
+			8gXMURgh6lYHihBVV/zqYlMSlATUEcmX4YZvvQBqu2g=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/fonts/SF-Pro-Medium.ttf</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			YvOd+ZBqVtyE1oyvKZaUBBPlVSU=
+			</data>
+			<key>hash2</key>
+			<data>
+			TSge91cOo0mMtdS2ky/QPeO9EalounnvcNR2JryE6j4=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/Twitter_Logo_Blue.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rMNklGB3sOMrI0NHTOQGatPuUkw=
+			</data>
+			<key>hash2</key>
+			<data>
+			G+XQXOb6rUaff5xaWHny2fjSZ7YOs5TpLBkhcmi86o8=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/apple_logo_black.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hV4KtPsC4p4RN3RWIhsbyIsJuyE=
+			</data>
+			<key>hash2</key>
+			<data>
+			aEMRoHg0xTdjGlf8mU+eN2+dtG6wiyz6L3enCrOSjUw=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/apple_logo_white.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Z1cA5iWnN7dRh/jnCdZqSfTZyyE=
+			</data>
+			<key>hash2</key>
+			<data>
+			kbr/qBrIH6ApaPxSExp5Qb89rMd/5z2QgeyxADGLXmA=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/flogo-HexRBG-Wht-100.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			NdUqG6cncjVMJuSBqUJotF7e/pk=
+			</data>
+			<key>hash2</key>
+			<data>
+			BBc1W+8ofTDUD3w9Fr5WhN2wm5hS6kn//FVGBKknzlg=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/google-logo.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			h2E0TeHHYPhONN594Q8v22ArPkQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			r4gTmcsICo5Dj/D9eK6KLcA0/qP6SeI21gAh7EOyKU4=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/flutter_auth_buttons/graphics/ms-symbollockup_mssymbol_19.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			KPdxpU2HVwUFjutZQdp2JAHArLk=
+			</data>
+			<key>hash2</key>
+			<data>
+			7MbsUaD/KiwzFOP5j0fHW+tsopTnBWnNxFegX+cCjY0=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/shrine_images/0-0.jpg</key>

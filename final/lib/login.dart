@@ -23,10 +23,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<void> signInAnonymously() async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+  }
+
+  @override
+  void initState() {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        Navigator.pushNamed(context, '/item');
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
     auth.authStateChanges().listen((User user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -75,21 +106,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
-
-Future<UserCredential> signInWithGoogle() async {
-  final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
-
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
-
-Future<void> signInAnonymously() async {
-  UserCredential userCredential =
-      await FirebaseAuth.instance.signInAnonymously();
 }
