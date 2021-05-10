@@ -176,6 +176,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
       "packageUri": "lib/",
@@ -184,6 +190,12 @@
     {
       "name": "plugin_platform_interface",
       "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/jeon-yeong-won/development/flutter/.pub-cache/hosted/pub.dartlang.org/provider-5.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -260,7 +272,7 @@
       "languageVersion": "2.10"
     }
   ],
-  "generated": "2021-05-08T03:37:36.801231Z",
+  "generated": "2021-05-10T07:13:45.016682Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }

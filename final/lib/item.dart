@@ -112,7 +112,7 @@ class _ItemPageState extends State<ItemPage> {
             ),
             onPressed: () {
               signOut();
-              Navigator.popUntil(context, ModalRoute.withName("/"));
+              Navigator.popUntil(context, ModalRoute.withName('/'));
             },
           ),
         ],

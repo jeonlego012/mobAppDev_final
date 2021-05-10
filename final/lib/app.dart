@@ -26,6 +26,7 @@ class ShrineApp extends StatelessWidget {
       //initialRoute: '/login',
       //onGenerateRoute: _getRoute,
       routes: {
+        //'/login': (context) => LoginPage(),
         '/item': (context) => ItemPage(),
       },
     );

@@ -13,6 +13,7 @@ dependencies:
   firebase_auth: ^1.1.0
   google_sign_in: ^5.0.2
   flutter_auth_buttons: ^0.10.0
+  provider: ^5.0.0
 
   cupertino_icons: ^0.1.0
   shrine_images: 1.1.1
