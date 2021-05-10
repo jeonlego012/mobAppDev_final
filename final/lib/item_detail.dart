@@ -18,6 +18,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       children: <Widget>[
         Image.asset(
           widget.product.assetName,
+          package: widget.product.assetPackage,
           width: 600,
           height: 240,
           fit: BoxFit.cover,

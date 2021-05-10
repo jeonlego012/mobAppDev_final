@@ -31,71 +31,64 @@ class _ItemPageState extends State<ItemPage> {
     await FirebaseAuth.instance.signOut();
   }
 
-  final isSelected = <bool>[false, true];
-  List<Product> products = ProductsRepository.loadProducts(Category.all);
   List<Card> _buildGridCards() {
+    List<Product> products = ProductsRepository.loadProducts(Category.all);
     if (products == null || products.isEmpty) {
       return const <Card>[];
     }
+    final ThemeData theme = Theme.of(context);
+
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
 
     return products.map((product) {
       return Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
-          //mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 18 / 9,
-              child: Hero(
-                tag: product.id,
-                child: Image.asset(
-                  product.assetName,
-                  fit: BoxFit.fitWidth,
-                ),
+              aspectRatio: 18 / 11,
+              child: Image.asset(
+                product.assetName,
+                package: product.assetPackage,
+                fit: BoxFit.fitWidth,
               ),
             ),
-            SizedBox(height: 5.0),
-            Expanded(
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            product.name,
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    product.name,
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    formatter.format(product.price),
+                    style: theme.textTheme.subtitle2,
                   ),
                 ],
               ),
             ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ItemDetailPage(product: product)),
-                  );
-                },
-                child: Text('more'),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  textStyle: TextStyle(
-                    fontSize: 14,
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ItemDetailPage(product: product)),
+                    );
+                  },
+                  child: Text('more'),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
