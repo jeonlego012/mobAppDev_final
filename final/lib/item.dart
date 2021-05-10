@@ -27,10 +27,6 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
-  }
-
   List<Card> _buildGridCards() {
     List<Product> products = ProductsRepository.loadProducts(Category.all);
     if (products == null || products.isEmpty) {
@@ -104,16 +100,18 @@ class _ItemPageState extends State<ItemPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Main'),
+        leading: IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            Navigator.pushNamed(context, '/profile');
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.search,
-              semanticLabel: 'search',
+              Icons.add,
+              semanticLabel: 'add',
             ),
-            onPressed: () {
-              signOut();
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-            },
           ),
         ],
       ),
