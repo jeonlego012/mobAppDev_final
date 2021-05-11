@@ -16,12 +16,19 @@ PODS:
   - Firebase/Firestore (7.11.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 7.11.0)
+  - Firebase/Storage (7.11.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 7.11.0)
   - firebase_auth (1.1.2):
     - Firebase/Auth (= 7.11.0)
     - firebase_core
     - Flutter
   - firebase_core (1.1.0):
     - Firebase/CoreOnly (= 7.11.0)
+    - Flutter
+  - firebase_storage (8.0.5):
+    - Firebase/Storage (= 7.11.0)
+    - firebase_core
     - Flutter
   - FirebaseAuth (7.11.0):
     - FirebaseCore (~> 7.0)
@@ -38,6 +45,9 @@ PODS:
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30908.0)
   - FirebaseFirestore (7.11.0)
+  - FirebaseStorage (7.11.0):
+    - FirebaseCore (~> 7.0)
+    - GTMSessionFetcher/Core (~> 1.4)
   - Flutter (1.0.0)
   - google_sign_in (0.0.1):
     - Flutter
@@ -69,6 +79,8 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
+  - image_picker (0.0.1):
+    - Flutter
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -80,9 +92,11 @@ DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `7.11.0`)
   - Flutter (from `Flutter`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
 
 SPEC REPOS:
   trunk:
@@ -91,6 +105,7 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseStorage
     - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
@@ -106,6 +121,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_storage:
+    :path: ".symlinks/plugins/firebase_storage/ios"
   FirebaseFirestore:
     :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
     :tag: 7.11.0
@@ -113,6 +130,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -125,10 +144,12 @@ SPEC CHECKSUMS:
   Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
   firebase_auth: e7065954aa2a7c8ef1a8502fba3009bcdd8fc91a
   firebase_core: 84dcd80ac6d29c3d1039071b7306ee99688eb9c7
+  firebase_storage: c92e1108d723373191eafd442e21cb2bd96d2b08
   FirebaseAuth: 5fe4585c2ed847319f0ea68bd1d82c77e49ff9a0
   FirebaseCore: 907447d8917a4d3eb0cce2829c5a0ad21d90b432
   FirebaseCoreDiagnostics: 68ad972f99206cef818230f3f3179d52ccfb7f8c
   FirebaseFirestore: 783538aced1557a6b817ee121593561127a00244
+  FirebaseStorage: 8542711850ca181a3931c0ed483006a7b46039e7
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
@@ -136,6 +157,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 284cddc7fffc14ae1907efb6f78ab95c1fccaedc
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
 
