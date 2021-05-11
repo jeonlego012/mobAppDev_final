@@ -112,6 +112,7 @@ class _ItemPageState extends State<ItemPage> {
               Icons.add,
               semanticLabel: 'add',
             ),
+            onPressed: () => Navigator.pushNamed(context, '/item_add'),
           ),
         ],
       ),

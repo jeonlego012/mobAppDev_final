@@ -18,6 +18,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'item.dart';
 
@@ -68,20 +69,6 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Text(
                               'Guest',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 10.0),
-                      child: RaisedButton(
-                        onPressed: () => appState.signOut(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Logout',
                             ),
                           ],
                         ),
@@ -143,6 +130,20 @@ class ApplicationState extends ChangeNotifier {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     notifyListeners();
+  }
+
+  Future<void> addItem(String itemName, int itemPrice, String itemDescription) {
+    return FirebaseFirestore.instance
+        .collection('items')
+        .add({
+          'name': itemName,
+          'price': itemPrice,
+          'description': itemDescription,
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'author': FirebaseAuth.instance.currentUser.uid,
+        })
+        .then((value) => print("Item added $value"))
+        .catchError((error) => print("Failed to add item: $error"));
   }
 }
 

@@ -50,6 +50,12 @@
     	<key>NSAllowsLocalNetworking</key>
     	<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio for image picker plugin</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
 	<!-- Google Sign-in Section -->
 	<key>CFBundleURLTypes</key>
 	<array>

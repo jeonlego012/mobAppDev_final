@@ -14,16 +14,14 @@ class ItemDetailPage extends StatefulWidget {
 class _ItemDetailPageState extends State<ItemDetailPage> {
   @override
   Widget build(BuildContext context) {
-    Widget imageSection = Stack(
-      children: <Widget>[
-        Image.asset(
-          widget.product.assetName,
-          package: widget.product.assetPackage,
-          width: 600,
-          height: 240,
-          fit: BoxFit.cover,
-        ),
-      ],
+    Widget imageSection = Container(
+      child: Image.asset(
+        widget.product.assetName,
+        package: widget.product.assetPackage,
+        width: 600,
+        height: 240,
+        fit: BoxFit.cover,
+      ),
     );
     Widget nameSection = Container(
       padding: EdgeInsets.fromLTRB(20.0, 10.0, 0.0, 10.0),

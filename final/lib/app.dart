@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import 'item.dart';
+import 'item_add.dart';
 import 'login.dart';
 import 'profile.dart';
 
@@ -29,6 +30,7 @@ class ShrineApp extends StatelessWidget {
       routes: {
         //'/login': (context) => LoginPage(),
         '/item': (context) => ItemPage(),
+        '/item_add': (context) => ItemAddPage(),
         '/profile': (context) => ProfilePage(),
       },
     );
