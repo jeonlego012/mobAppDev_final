@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-//import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 
 import 'login.dart';
@@ -12,20 +13,42 @@ class ItemAddPage extends StatefulWidget {
 }
 
 class _ItemAddPageState extends State<ItemAddPage> {
+  File _image;
+  final picker = ImagePicker();
   final _formKey = GlobalKey<FormState>(debugLabel: '_ItemAddPageState');
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
 
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        //print(pickedFile.path);
+      } else {
+        print('No image selected');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget imageSection = Container(
-      child: Image.asset(
-        'assets/default.png',
-        width: 600,
-        height: 240,
-        fit: BoxFit.fitWidth,
-      ),
+      child: _image == null
+          ? Image.asset(
+              'assets/default.png',
+              width: 600,
+              height: 240,
+              fit: BoxFit.fitWidth,
+            )
+          : Image.file(
+              _image,
+              width: 600,
+              height: 240,
+              fit: BoxFit.fitWidth,
+            ),
     );
     Widget iconSection = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -34,6 +57,7 @@ class _ItemAddPageState extends State<ItemAddPage> {
             icon: Icon(Icons.photo_camera),
             onPressed: () {
               print('photo select!');
+              getImage();
             }),
       ],
     );
@@ -121,6 +145,9 @@ class _ItemAddPageState extends State<ItemAddPage> {
                         _nameController.text,
                         num.tryParse(_priceController.text),
                         _descriptionController.text);
+                    await firebase_storage.FirebaseStorage.instance
+                        .ref(_nameController.text)
+                        .putFile(_image);
                     Navigator.pop(context);
                   }
                 },

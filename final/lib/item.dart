@@ -12,14 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-import 'model/products_repository.dart';
-import 'model/product.dart';
 import 'item_detail.dart';
 import 'login.dart';
+
+class Item {
+  Item({
+    @required this.imageURL,
+    @required this.name,
+    @required this.price,
+    @required this.description,
+  });
+  final String imageURL;
+  final String name;
+  final int price;
+  final String description;
+}
 
 class ItemPage extends StatefulWidget {
   @override
@@ -27,9 +41,8 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  List<Card> _buildGridCards() {
-    List<Product> products = ProductsRepository.loadProducts(Category.all);
-    if (products == null || products.isEmpty) {
+  List<Card> _buildGridCards(List<Item> items) {
+    if (items == null || items.isEmpty) {
       return const <Card>[];
     }
     final ThemeData theme = Theme.of(context);
@@ -37,7 +50,7 @@ class _ItemPageState extends State<ItemPage> {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
-    return products.map((product) {
+    return items.map((item) {
       return Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -45,9 +58,8 @@ class _ItemPageState extends State<ItemPage> {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 18 / 11,
-              child: Image.asset(
-                product.assetName,
-                package: product.assetPackage,
+              child: Image.network(
+                item.imageURL,
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -57,38 +69,38 @@ class _ItemPageState extends State<ItemPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    product.name,
+                    item.name,
                   ),
                   SizedBox(height: 8.0),
                   Text(
-                    formatter.format(product.price),
+                    formatter.format(item.price),
                     style: theme.textTheme.subtitle2,
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ItemDetailPage(product: product)),
-                    );
-                  },
-                  child: Text('more'),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    textStyle: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Expanded(
+            //   child: Container(
+            //     alignment: Alignment.centerRight,
+            //     child: TextButton(
+            //       onPressed: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) =>
+            //                   ItemDetailPage(product: product)),
+            //         );
+            //       },
+            //       child: Text('more'),
+            //       style: TextButton.styleFrom(
+            //         padding: EdgeInsets.zero,
+            //         textStyle: TextStyle(
+            //           fontSize: 14,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );
@@ -116,19 +128,21 @@ class _ItemPageState extends State<ItemPage> {
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: OrientationBuilder(builder: (context, orientation) {
-              return GridView.count(
-                crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                padding: EdgeInsets.all(16.0),
-                childAspectRatio: 8.0 / 9.0,
-                children: _buildGridCards(),
-              );
-            }),
-          ),
-        ],
+      body: Consumer<ApplicationState>(
+        builder: (context, appState, _) => Column(
+          children: <Widget>[
+            Expanded(
+              child: OrientationBuilder(builder: (context, orientation) {
+                return GridView.count(
+                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                  padding: EdgeInsets.all(16.0),
+                  childAspectRatio: 8.0 / 9.0,
+                  children: _buildGridCards(appState.items),
+                );
+              }),
+            ),
+          ],
+        ),
       ),
       resizeToAvoidBottomInset: true,
     );

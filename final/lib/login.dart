@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,6 +21,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'item.dart';
 
@@ -88,6 +91,10 @@ class LoginPage extends StatelessWidget {
 class ApplicationState extends ChangeNotifier {
   bool loggedIn = false;
 
+  StreamSubscription<QuerySnapshot> _itemSubscription;
+  List<Item> _items = [];
+  List<Item> get items => _items;
+
   ApplicationState() {
     init();
   }
@@ -99,9 +106,32 @@ class ApplicationState extends ChangeNotifier {
       if (user == null) {
         loggedIn = false;
         print('User is signed out!');
+        _items = [];
+        _itemSubscription.cancel();
       } else {
         loggedIn = true;
         print('User is signed in! ${user.email}');
+        _itemSubscription = FirebaseFirestore.instance
+            .collection('items')
+            .orderBy('price', descending: true)
+            .snapshots()
+            .listen((snapshot) {
+          _items = [];
+          snapshot.docs.forEach((document) async {
+            String imageURL = await firebase_storage.FirebaseStorage.instance
+                .ref(document.data()['name'])
+                .getDownloadURL();
+            _items.add(
+              Item(
+                imageURL: imageURL,
+                name: document.data()['name'],
+                price: document.data()['price'],
+                description: document.data()['description'],
+              ),
+            );
+          });
+          notifyListeners();
+        });
       }
       notifyListeners();
     });
@@ -139,7 +169,8 @@ class ApplicationState extends ChangeNotifier {
           'name': itemName,
           'price': itemPrice,
           'description': itemDescription,
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'creation_time': DateTime.now(),
+          'recent_update_time': null,
           'author': FirebaseAuth.instance.currentUser.uid,
         })
         .then((value) => print("Item added $value"))
