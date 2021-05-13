@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'login.dart';
-import 'model/product.dart';
+import 'item.dart';
 
 class ItemDetailPage extends StatefulWidget {
-  final Product product;
+  final Item item;
 
-  ItemDetailPage({Key key, @required this.product}) : super(key: key);
+  ItemDetailPage({Key key, @required this.item}) : super(key: key);
 
   @override
   _ItemDetailPageState createState() => _ItemDetailPageState();
@@ -16,40 +16,42 @@ class ItemDetailPage extends StatefulWidget {
 class _ItemDetailPageState extends State<ItemDetailPage> {
   @override
   Widget build(BuildContext context) {
-    // Widget imageSection = Container(
-    //   child: Image.asset(
-    //     widget.product.assetName,
-    //     package: widget.product.assetPackage,
-    //     width: 600,
-    //     height: 240,
-    //     fit: BoxFit.cover,
-    //   ),
-    // );
-    // Widget nameSection = Consumer<ApplicationState>(
-    //   builder: (context, appState, _) => Row(
-    //     children: <Widget>[
-    //       Column(
-    //         children: [
-
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    //   child: Text(
-    //     widget.product.name,
-    //     style: TextStyle(
-    //       fontSize: 20,
-    //       fontWeight: FontWeight.bold,
-    //     ),
-    //   ),
-    // );
-    Widget iconSection = Container(
-      padding: EdgeInsets.fromLTRB(20.0, 15.0, 0.0, 10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildIconRow(Icons.phone, widget.product.price),
+    Widget imageSection = Container(
+      child: Image.network(
+        widget.item.imageURL,
+        fit: BoxFit.fitWidth,
+      ),
+    );
+    Widget nameSection = Consumer<ApplicationState>(
+      builder: (context, appState, _) => Row(
+        children: <Widget>[
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  widget.item.name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  '\$${widget.item.price}',
+                ),
+              ),
+            ],
+          ),
         ],
+      ),
+    );
+    Widget descriptioinSection = Consumer<ApplicationState>(
+      builder: (context, appState, _) => Padding(
+        padding: EdgeInsets.all(30.0),
+        child: Text('${widget.item.description}'),
       ),
     );
     return Scaffold(
@@ -79,26 +81,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       ),
       body: ListView(
         children: [
-          // imageSection,
-          // nameSection,
+          imageSection,
+          nameSection,
           _buildDivider(),
-          iconSection,
+          descriptioinSection,
         ],
       ),
-    );
-  }
-
-  Row _buildIconRow(IconData icon, int price) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 10.0),
-          child: Icon(icon),
-        ),
-        Text(
-          '$price',
-        ),
-      ],
     );
   }
 

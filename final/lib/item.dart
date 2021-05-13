@@ -79,28 +79,27 @@ class _ItemPageState extends State<ItemPage> {
                 ],
               ),
             ),
-            // Expanded(
-            //   child: Container(
-            //     alignment: Alignment.centerRight,
-            //     child: TextButton(
-            //       onPressed: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //               builder: (context) =>
-            //                   ItemDetailPage(product: product)),
-            //         );
-            //       },
-            //       child: Text('more'),
-            //       style: TextButton.styleFrom(
-            //         padding: EdgeInsets.zero,
-            //         textStyle: TextStyle(
-            //           fontSize: 14,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ItemDetailPage(item: item)),
+                    );
+                  },
+                  child: Text('more'),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );

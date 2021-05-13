@@ -43,15 +43,6 @@ class LoginPage extends StatelessWidget {
             ),
             Consumer<ApplicationState>(
               builder: (context, appState, _) {
-                if (appState.loggedIn) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ItemPage(),
-                        ));
-                  });
-                }
                 return Column(
                   children: [
                     Container(
@@ -72,6 +63,30 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Text(
                               'Guest',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 10.0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          if (appState.loggedIn) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ItemPage(),
+                                  ));
+                            });
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'HOME',
                             ),
                           ],
                         ),
@@ -106,8 +121,8 @@ class ApplicationState extends ChangeNotifier {
       if (user == null) {
         loggedIn = false;
         print('User is signed out!');
-        _items = [];
-        _itemSubscription.cancel();
+        // _items = [];
+        // _itemSubscription.cancel();
       } else {
         loggedIn = true;
         print('User is signed in! ${user.email}');
@@ -184,26 +199,21 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
-
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
-
   Future<void> signInAnonymously() async {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInAnonymously();
   }
-
   @override
   void initState() {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -217,7 +227,6 @@ class _LoginPageState extends State<LoginPage> {
     });
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -229,7 +238,6 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushNamed(context, '/item');
       }
     });
-
     return Scaffold(
       body: SafeArea(
         child: ListView(

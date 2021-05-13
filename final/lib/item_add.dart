@@ -147,8 +147,8 @@ class _ItemAddPageState extends State<ItemAddPage> {
                         _descriptionController.text);
                     await firebase_storage.FirebaseStorage.instance
                         .ref(_nameController.text)
-                        .putFile(_image);
-                    Navigator.pop(context);
+                        .putFile(_image)
+                        .then((value) => Navigator.pop(context));
                   }
                 },
               ),
