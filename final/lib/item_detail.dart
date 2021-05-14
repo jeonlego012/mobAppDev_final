@@ -16,12 +16,12 @@ class ItemDetailPage extends StatefulWidget {
 class _ItemDetailPageState extends State<ItemDetailPage> {
   @override
   Widget build(BuildContext context) {
-    Widget imageSection = Container(
-      child: Image.network(
-        widget.item.imageURL,
-        fit: BoxFit.fitWidth,
-      ),
-    );
+    // Widget imageSection = Container(
+    //   child: Image.network(
+    //     widget.item.imageURL,
+    //     fit: BoxFit.fitWidth,
+    //   ),
+    // );
     Widget nameSection = Consumer<ApplicationState>(
       builder: (context, appState, _) => Row(
         children: <Widget>[
@@ -81,7 +81,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       ),
       body: ListView(
         children: [
-          imageSection,
+          //imageSection,
           nameSection,
           _buildDivider(),
           descriptioinSection,

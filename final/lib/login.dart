@@ -43,6 +43,15 @@ class LoginPage extends StatelessWidget {
             ),
             Consumer<ApplicationState>(
               builder: (context, appState, _) {
+                if (appState.loggedIn) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ItemPage(),
+                        ));
+                  });
+                }
                 return Column(
                   children: [
                     Container(
@@ -63,30 +72,6 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Text(
                               'Guest',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 10.0),
-                      child: RaisedButton(
-                        onPressed: () {
-                          if (appState.loggedIn) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ItemPage(),
-                                  ));
-                            });
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'HOME',
                             ),
                           ],
                         ),
@@ -115,6 +100,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
 
     FirebaseAuth.instance.userChanges().listen((user) {
@@ -133,12 +119,12 @@ class ApplicationState extends ChangeNotifier {
             .listen((snapshot) {
           _items = [];
           snapshot.docs.forEach((document) async {
-            String imageURL = await firebase_storage.FirebaseStorage.instance
-                .ref(document.data()['name'])
-                .getDownloadURL();
+            // String imageURL = await firebase_storage.FirebaseStorage.instance
+            //     .ref(document.data()['name'])
+            //     .getDownloadURL();
             _items.add(
               Item(
-                imageURL: imageURL,
+                //imageURL: imageURL,
                 name: document.data()['name'],
                 price: document.data()['price'],
                 description: document.data()['description'],

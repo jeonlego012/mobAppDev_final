@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 import 'login.dart';
 
@@ -19,19 +20,6 @@ class _ItemAddPageState extends State<ItemAddPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        //print(pickedFile.path);
-      } else {
-        print('No image selected');
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +135,7 @@ class _ItemAddPageState extends State<ItemAddPage> {
                         _descriptionController.text);
                     await firebase_storage.FirebaseStorage.instance
                         .ref(_nameController.text)
-                        .putFile(_image)
-                        .then((value) => Navigator.pop(context));
+                        .putFile(_image);
                   }
                 },
               ),
@@ -165,4 +152,30 @@ class _ItemAddPageState extends State<ItemAddPage> {
       ),
     );
   }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        //print(pickedFile.path);
+      } else {
+        print('No image selected');
+      }
+    });
+  }
+
+  // void uploadImage(File file, String name) async {
+  //   // await firebase_storage.FirebaseStorage.instance
+  //   //     .ref(_nameController.text)
+  //   //     .putFile(_image)
+  //   //     .then((value) => Navigator.pop(context));
+  //   firebase_storage.Reference storageReference =
+  //       firebase_storage.FirebaseStorage.instance.ref(name);
+  //   firebase_storage.UploadTask storageUploadTask =
+  //       storageReference.putFile(file);
+
+  //   String imageURL = await storageReference.getDownloadURL();
+  // }
 }

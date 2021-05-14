@@ -12,24 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'item_detail.dart';
 import 'login.dart';
 
 class Item {
   Item({
-    @required this.imageURL,
+    //@required this.imageURL,
     @required this.name,
     @required this.price,
     @required this.description,
   });
-  final String imageURL;
+  //final String imageURL;
   final String name;
   final int price;
   final String description;
@@ -56,13 +53,13 @@ class _ItemPageState extends State<ItemPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            AspectRatio(
-              aspectRatio: 18 / 11,
-              child: Image.network(
-                item.imageURL,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
+            // AspectRatio(
+            //   aspectRatio: 18 / 11,
+            //   child: Image.network(
+            //     item.imageURL,
+            //     fit: BoxFit.fitWidth,
+            //   ),
+            // ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
               child: Column(
@@ -128,20 +125,24 @@ class _ItemPageState extends State<ItemPage> {
         ],
       ),
       body: Consumer<ApplicationState>(
-        builder: (context, appState, _) => Column(
-          children: <Widget>[
-            Expanded(
-              child: OrientationBuilder(builder: (context, orientation) {
-                return GridView.count(
-                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                  padding: EdgeInsets.all(16.0),
-                  childAspectRatio: 8.0 / 9.0,
-                  children: _buildGridCards(appState.items),
-                );
-              }),
-            ),
-          ],
-        ),
+        builder: (context, appState, _) {
+          //appState.readItem();
+          print(appState.items);
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: OrientationBuilder(builder: (context, orientation) {
+                  return GridView.count(
+                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                    padding: EdgeInsets.all(16.0),
+                    childAspectRatio: 8.0 / 9.0,
+                    children: _buildGridCards(appState.items),
+                  );
+                }),
+              ),
+            ],
+          );
+        },
       ),
       resizeToAvoidBottomInset: true,
     );
