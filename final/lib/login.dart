@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,27 +113,7 @@ class ApplicationState extends ChangeNotifier {
       } else {
         loggedIn = true;
         print('User is signed in! ${user.email}');
-        _itemSubscription = FirebaseFirestore.instance
-            .collection('items')
-            .orderBy('price', descending: true)
-            .snapshots()
-            .listen((snapshot) {
-          _items = [];
-          snapshot.docs.forEach((document) async {
-            // String imageURL = await firebase_storage.FirebaseStorage.instance
-            //     .ref(document.data()['name'])
-            //     .getDownloadURL();
-            _items.add(
-              Item(
-                //imageURL: imageURL,
-                name: document.data()['name'],
-                price: document.data()['price'],
-                description: document.data()['description'],
-              ),
-            );
-          });
-          notifyListeners();
-        });
+        loadItems();
       }
       notifyListeners();
     });
@@ -163,19 +144,52 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addItem(String itemName, int itemPrice, String itemDescription) {
-    return FirebaseFirestore.instance
+  Future<void> addItemToFirestore(
+      String itemName, int itemPrice, String itemDescription) {
+    return FirebaseFirestore.instance.collection('items').add({
+      'name': itemName,
+      'price': itemPrice,
+      'description': itemDescription,
+      'creation_time': DateTime.now(),
+      'recent_update_time': null,
+      'author': FirebaseAuth.instance.currentUser.uid,
+    }).then((value) {
+      print("Item added $value");
+      notifyListeners();
+    }).catchError((error) => print("Failed to add item: $error"));
+  }
+
+  Future<void> addImageToStorage(String imageName, File image) async {
+    //firebase_storage.TaskSnapshot snapshot =
+    await firebase_storage.FirebaseStorage.instance
+        .ref(imageName)
+        .putFile(image)
+        .then((value) => notifyListeners())
+        .catchError((error) => print("Failed to add image: $error"));
+  }
+
+  Future<void> loadItems() {
+    _itemSubscription = FirebaseFirestore.instance
         .collection('items')
-        .add({
-          'name': itemName,
-          'price': itemPrice,
-          'description': itemDescription,
-          'creation_time': DateTime.now(),
-          'recent_update_time': null,
-          'author': FirebaseAuth.instance.currentUser.uid,
-        })
-        .then((value) => print("Item added $value"))
-        .catchError((error) => print("Failed to add item: $error"));
+        .orderBy('price', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      _items = [];
+      snapshot.docs.forEach((document) async {
+        String imageURL = await firebase_storage.FirebaseStorage.instance
+            .ref(document.data()['name'])
+            .getDownloadURL();
+        _items.add(
+          Item(
+            imageURL: imageURL,
+            name: document.data()['name'],
+            price: document.data()['price'],
+            description: document.data()['description'],
+          ),
+        );
+      });
+      notifyListeners();
+    });
   }
 }
 

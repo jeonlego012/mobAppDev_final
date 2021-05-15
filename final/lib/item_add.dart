@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 import 'login.dart';
 
@@ -127,15 +126,12 @@ class _ItemAddPageState extends State<ItemAddPage> {
                 child: Text('Save'),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    print(
-                        '${_nameController.text}, ${num.tryParse(_priceController.text)}, ${_descriptionController.text}');
-                    await appState.addItem(
+                    await appState.addItemToFirestore(
                         _nameController.text,
                         num.tryParse(_priceController.text),
                         _descriptionController.text);
-                    await firebase_storage.FirebaseStorage.instance
-                        .ref(_nameController.text)
-                        .putFile(_image);
+                    await appState.addImageToStorage(
+                        _nameController.text, _image);
                   }
                 },
               ),

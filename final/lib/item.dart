@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'item_detail.dart';
 import 'login.dart';
 
 class Item {
   Item({
-    //@required this.imageURL,
+    @required this.imageURL,
     @required this.name,
     @required this.price,
     @required this.description,
   });
-  //final String imageURL;
+  final String imageURL;
   final String name;
   final int price;
   final String description;
@@ -38,6 +41,7 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
+  List<Item> _items = [];
   List<Card> _buildGridCards(List<Item> items) {
     if (items == null || items.isEmpty) {
       return const <Card>[];
@@ -53,13 +57,13 @@ class _ItemPageState extends State<ItemPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // AspectRatio(
-            //   aspectRatio: 18 / 11,
-            //   child: Image.network(
-            //     item.imageURL,
-            //     fit: BoxFit.fitWidth,
-            //   ),
-            // ),
+            AspectRatio(
+              aspectRatio: 18 / 11,
+              child: Image.network(
+                item.imageURL,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
               child: Column(
@@ -103,6 +107,33 @@ class _ItemPageState extends State<ItemPage> {
     }).toList();
   }
 
+  List<Item> loadItems() {
+    StreamSubscription<QuerySnapshot> _itemSubscription;
+
+    _itemSubscription = FirebaseFirestore.instance
+        .collection('items')
+        .orderBy('price', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      _items = [];
+      snapshot.docs.forEach((document) async {
+        String imageURL = await firebase_storage.FirebaseStorage.instance
+            .ref(document.data()['name'])
+            .getDownloadURL();
+        _items.add(
+          Item(
+            imageURL: imageURL,
+            name: document.data()['name'],
+            price: document.data()['price'],
+            description: document.data()['description'],
+          ),
+        );
+        print("loaditem : $_items");
+      });
+    });
+    return _items;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,25 +157,85 @@ class _ItemPageState extends State<ItemPage> {
       ),
       body: Consumer<ApplicationState>(
         builder: (context, appState, _) {
-          //appState.readItem();
+          appState.items.sort((a, b) => a.price.compareTo(b.price));
+          List<Item> reversed_items = appState.items.reversed.toList();
           print(appState.items);
           return Column(
             children: <Widget>[
               Expanded(
-                child: OrientationBuilder(builder: (context, orientation) {
-                  return GridView.count(
-                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                    padding: EdgeInsets.all(16.0),
-                    childAspectRatio: 8.0 / 9.0,
-                    children: _buildGridCards(appState.items),
-                  );
-                }),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.all(16.0),
+                  childAspectRatio: 8.0 / 9.0,
+                  //children: _buildGridCards(appState.items),
+                  children: _buildGridCards(reversed_items),
+                ),
               ),
             ],
           );
         },
+        /*FutureBuilder(
+            future: appState.loadItems(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              print(snapshot);
+              if (snapshot.hasData == false) {
+                print(appState.items);
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                print(appState.items);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              } else {
+                print(appState.items);
+                appState.items.sort((a, b) => a.price.compareTo(b.price));
+                List<Item> reversed_items = appState.items.reversed.toList();
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        padding: EdgeInsets.all(16.0),
+                        childAspectRatio: 8.0 / 9.0,
+                        //children: _buildGridCards(appState.items),
+                        children: _buildGridCards(reversed_items),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }),*/
       ),
       resizeToAvoidBottomInset: true,
     );
   }
+
+  /*Future<void> loadItems() {
+    StreamSubscription<QuerySnapshot> _itemSubscription;
+
+    _itemSubscription = FirebaseFirestore.instance
+        .collection('items')
+        .orderBy('price', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      _items = [];
+      snapshot.docs.forEach((document) async {
+        String imageURL = await firebase_storage.FirebaseStorage.instance
+            .ref(document.data()['name'])
+            .getDownloadURL();
+        _items.add(
+          Item(
+            imageURL: imageURL,
+            name: document.data()['name'],
+            price: document.data()['price'],
+            description: document.data()['description'],
+          ),
+        );
+      });
+    });
+  }*/
 }
