@@ -18,8 +18,6 @@ import 'package:provider/provider.dart';
 import 'login.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ApplicationState(),

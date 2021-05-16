@@ -43,7 +43,6 @@ class _ItemAddPageState extends State<ItemAddPage> {
         IconButton(
             icon: Icon(Icons.photo_camera),
             onPressed: () {
-              print('photo select!');
               getImage();
             }),
       ],
@@ -115,7 +114,7 @@ class _ItemAddPageState extends State<ItemAddPage> {
               },
             ),
             Padding(
-              padding: EdgeInsets.only(left: 90.0, right: 100.0),
+              padding: EdgeInsets.only(left: 75.0, right: 100.0),
               child: Text('Add'),
             ),
             Consumer<ApplicationState>(
@@ -155,23 +154,9 @@ class _ItemAddPageState extends State<ItemAddPage> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        //print(pickedFile.path);
       } else {
         print('No image selected');
       }
     });
   }
-
-  // void uploadImage(File file, String name) async {
-  //   // await firebase_storage.FirebaseStorage.instance
-  //   //     .ref(_nameController.text)
-  //   //     .putFile(_image)
-  //   //     .then((value) => Navigator.pop(context));
-  //   firebase_storage.Reference storageReference =
-  //       firebase_storage.FirebaseStorage.instance.ref(name);
-  //   firebase_storage.UploadTask storageUploadTask =
-  //       storageReference.putFile(file);
-
-  //   String imageURL = await storageReference.getDownloadURL();
-  // }
 }

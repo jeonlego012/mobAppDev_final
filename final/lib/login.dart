@@ -37,9 +37,12 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 80.0),
             Column(
               children: <Widget>[
-                Image.asset('assets/diamond.png'),
+                Image.asset(
+                  'assets/fish.png',
+                  height: 80.0,
+                  width: 90.0,
+                ),
                 SizedBox(height: 16.0),
-                Text('SHRINE'),
               ],
             ),
             Consumer<ApplicationState>(
@@ -91,10 +94,7 @@ class LoginPage extends StatelessWidget {
 
 class ApplicationState extends ChangeNotifier {
   bool loggedIn = false;
-
   StreamSubscription<QuerySnapshot> _itemSubscription;
-  List<Item> _items = [];
-  List<Item> get items => _items;
 
   ApplicationState() {
     init();
@@ -108,12 +108,12 @@ class ApplicationState extends ChangeNotifier {
       if (user == null) {
         loggedIn = false;
         print('User is signed out!');
-        // _items = [];
-        // _itemSubscription.cancel();
+        //_items = [];
+        //_itemSubscription.cancel();
       } else {
+        //_items = [];
         loggedIn = true;
         print('User is signed in! ${user.email}');
-        loadItems();
       }
       notifyListeners();
     });
@@ -150,132 +150,103 @@ class ApplicationState extends ChangeNotifier {
       'name': itemName,
       'price': itemPrice,
       'description': itemDescription,
-      'creation_time': DateTime.now(),
+      'creation_time': FieldValue.serverTimestamp(),
       'recent_update_time': null,
       'author': FirebaseAuth.instance.currentUser.uid,
+      'like_users': <dynamic>[],
     }).then((value) {
-      print("Item added $value");
+      print("Item added to firestore $value");
       notifyListeners();
     }).catchError((error) => print("Failed to add item: $error"));
   }
 
+  Future<void> editItemFromFirestore(
+      String itemId, String itemName, int itemPrice, String itemDescription) {
+    return FirebaseFirestore.instance.collection('items').doc(itemId).update({
+      'name': itemName,
+      'price': itemPrice,
+      'description': itemDescription,
+      'recent_update_time': FieldValue.serverTimestamp(),
+    }).then((value) {
+      print("Item edited to firestore");
+      notifyListeners();
+    }).catchError((error) => print("Filed to edit item: $error"));
+  }
+
+  Future<void> deleteItemFromFirestore(String itemId) {
+    return FirebaseFirestore.instance
+        .collection('items')
+        .doc(itemId)
+        .delete()
+        .then((value) {
+      print("Item edited to firestore");
+      notifyListeners();
+    }).catchError((error) => print("Filed to edit item: $error"));
+  }
+
   Future<void> addImageToStorage(String imageName, File image) async {
-    //firebase_storage.TaskSnapshot snapshot =
+    firebase_storage.SettableMetadata metadata =
+        firebase_storage.SettableMetadata(
+      customMetadata: <String, String>{
+        'authorId': FirebaseAuth.instance.currentUser.uid,
+      },
+    );
     await firebase_storage.FirebaseStorage.instance
         .ref(imageName)
-        .putFile(image)
-        .then((value) => notifyListeners())
-        .catchError((error) => print("Failed to add image: $error"));
-  }
-
-  Future<void> loadItems() {
-    _itemSubscription = FirebaseFirestore.instance
-        .collection('items')
-        .orderBy('price', descending: true)
-        .snapshots()
-        .listen((snapshot) {
-      _items = [];
-      snapshot.docs.forEach((document) async {
-        String imageURL = await firebase_storage.FirebaseStorage.instance
-            .ref(document.data()['name'])
-            .getDownloadURL();
-        _items.add(
-          Item(
-            imageURL: imageURL,
-            name: document.data()['name'],
-            price: document.data()['price'],
-            description: document.data()['description'],
-          ),
-        );
-      });
+        .putFile(image, metadata)
+        .then((value) {
+      print("Item added to storage $value");
       notifyListeners();
-    });
+    }).catchError((error) => print("Failed to add image: $error"));
   }
-}
 
-////////////////////////////////////////////////
-/*
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-class _LoginPageState extends State<LoginPage> {
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+  Future<void> editImageFromStorage(String previous, String previousImagePath,
+      String imageName, File image) async {
+    firebase_storage.SettableMetadata metadata =
+        firebase_storage.SettableMetadata(
+      customMetadata: <String, String>{
+        'authorId': FirebaseAuth.instance.currentUser.uid,
+      },
     );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    if (image != null) {
+      await firebase_storage.FirebaseStorage.instance
+          .ref(previous)
+          .delete()
+          .then((value) {
+        print("Item deleted from storage");
+        notifyListeners();
+      }).catchError((error) => print("Failed to delete image: $error"));
+      await firebase_storage.FirebaseStorage.instance
+          .ref(imageName)
+          .putFile(image, metadata)
+          .then((value) {
+        print("Item added to storage $value");
+        notifyListeners();
+      }).catchError((error) => print("Failed to add image: $error"));
+    } else {
+      await firebase_storage.FirebaseStorage.instance
+          .ref(imageName)
+          .putFile(File(previousImagePath), metadata)
+          .then((value) {
+        print("Item added to storage $value");
+        notifyListeners();
+      }).catchError((error) => print("Failed to add image: $error"));
+      await firebase_storage.FirebaseStorage.instance
+          .ref(previous)
+          .delete()
+          .then((value) {
+        print("Item deleted from storage");
+      }).catchError((error) => print("Failed to delete image: $error"));
+    }
   }
-  Future<void> signInAnonymously() async {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInAnonymously();
-  }
-  @override
-  void initState() {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    auth.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-        Navigator.pushNamed(context, '/item');
-      }
-    });
-    super.initState();
-  }
-  @override
-  Widget build(BuildContext context) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    auth.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-        Navigator.pushNamed(context, '/item');
-      }
-    });
-    return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          children: <Widget>[
-            SizedBox(height: 80.0),
-            Column(
-              children: <Widget>[
-                Image.asset('assets/diamond.png'),
-                SizedBox(height: 16.0),
-                Text('SHRINE'),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 5.0),
-              child: GoogleSignInButton(
-                centered: true,
-                onPressed: () => signInWithGoogle(),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 10.0),
-              child: RaisedButton(
-                onPressed: () => signInAnonymously(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Guest',
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+
+  Future<void> deleteImageFromStorage(String imageName) async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref(imageName)
+        .delete()
+        .then((value) {
+      print("Item deleted from storage");
+      notifyListeners();
+    }).catchError((error) => print("Failed to delete image: $error"));
   }
 }
-*/
