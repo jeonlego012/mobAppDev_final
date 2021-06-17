@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'login.dart';
+import 'model/item.dart';
+import 'model/item_transaction.dart';
 
 class ItemAddPage extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class _ItemAddPageState extends State<ItemAddPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -117,23 +120,25 @@ class _ItemAddPageState extends State<ItemAddPage> {
               padding: EdgeInsets.only(left: 75.0, right: 100.0),
               child: Text('Add'),
             ),
-            Consumer<ApplicationState>(
-              builder: (context, appState, _) => TextButton(
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                ),
-                child: Text('Save'),
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    await appState.addItemToFirestore(
-                        _nameController.text,
-                        num.tryParse(_priceController.text),
-                        _descriptionController.text);
-                    await appState.addImageToStorage(
-                        _nameController.text, _image);
-                  }
-                },
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.white,
               ),
+              child: Text('Save'),
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  addItem(
+                      Item(
+                        userId: _firebaseAuth.currentUser.uid,
+                        name: _nameController.text,
+                        price: num.tryParse(_priceController.text),
+                        description: _descriptionController.text,
+                        creationTime: Timestamp.now(),
+                      ),
+                      _image);
+                  Navigator.pop(context);
+                }
+              },
             ),
           ],
         ),
