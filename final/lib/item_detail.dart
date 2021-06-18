@@ -32,7 +32,6 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     getItem(itemId).then((Item item) {
       setState(() {
         _item = item;
-        print('item : ${_item.id}');
         _itemLikers = _item.likeUsers;
         likeNum = _itemLikers.length;
         _isLoading = false;

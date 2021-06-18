@@ -8,12 +8,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppbar(),
-      body: Column(
-        children: <Widget>[
-          //TODO : dropdown button
-          Body(),
-        ],
-      ),
+      body: Body(),
     );
   }
 }

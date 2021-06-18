@@ -14,7 +14,9 @@
 
 import 'package:flutter/material.dart';
 
+import 'item_add.dart';
 import 'login.dart';
+import 'profile.dart';
 
 class ShrineApp extends StatelessWidget {
   @override
@@ -22,6 +24,11 @@ class ShrineApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shrine',
       home: LoginPage(),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/item_add': (context) => ItemAddPage(),
+        '/profile': (context) => ProfilePage(),
+      },
     );
   }
 }

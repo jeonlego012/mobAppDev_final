@@ -15,9 +15,11 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   StreamSubscription<QuerySnapshot> _currentSubscription;
   List<Item> _items = <Item>[];
+  bool _descending = false;
+  String dropdownValue = 'ASC';
 
   _BodyState() {
-    _currentSubscription = loadAllItems().listen(_updateItems);
+    _currentSubscription = loadAllItems(_descending).listen(_updateItems);
   }
 
   @override
@@ -104,13 +106,41 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        children: _buildGridCards(_items),
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 10.0, right: 16.0),
+          alignment: Alignment.centerRight,
+          child: DropdownButton<String>(
+            value: dropdownValue,
+            icon: const Icon(Icons.arrow_downward),
+            iconSize: 20,
+            onChanged: (String newValue) {
+              setState(() {
+                dropdownValue = newValue;
+                _descending = !_descending;
+                _currentSubscription =
+                    loadAllItems(_descending).listen(_updateItems);
+              });
+            },
+            items: <String>['ASC', 'DESC']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 2,
+            padding: EdgeInsets.all(16.0),
+            childAspectRatio: 8.0 / 9.0,
+            children: _buildGridCards(_items),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -52,10 +52,10 @@ Future<void> deleteItem(String itemId) async {
   });
 }
 
-Stream<QuerySnapshot> loadAllItems() {
+Stream<QuerySnapshot> loadAllItems(bool descending) {
   return FirebaseFirestore.instance
       .collection('items')
-      .orderBy('price', descending: true)
+      .orderBy('price', descending: descending)
       .snapshots();
 }
 
