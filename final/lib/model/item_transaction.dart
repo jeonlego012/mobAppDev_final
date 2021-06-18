@@ -23,6 +23,35 @@ Future<void> addItem(Item item, File image) async {
   });
 }
 
+Future<void> editItem(String itemId, String name, int price, String description,
+    String imageURL) {
+  final firebase_item =
+      FirebaseFirestore.instance.collection('items').doc(itemId);
+  return firebase_item.update({
+    'name': name,
+    'price': price,
+    'description': description,
+    'imageURL': imageURL,
+    'updatedTime': Timestamp.now(),
+  });
+}
+
+Future<void> deleteItem(String itemId) async {
+  final firebase_item =
+      FirebaseFirestore.instance.collection('items').doc(itemId);
+  final storage_item = FirebaseStorage.instance;
+  String itemCreationTime, itemUserId, imageName;
+  firebase_item.get().then((value) {
+    itemCreationTime = value.data()['creationTime'].toString();
+    itemUserId = value.data()['userId'];
+    imageName = itemCreationTime + '_' + itemUserId;
+    storage_item
+        .ref(imageName)
+        .delete()
+        .then((value) => firebase_item.delete());
+  });
+}
+
 Stream<QuerySnapshot> loadAllItems() {
   return FirebaseFirestore.instance
       .collection('items')

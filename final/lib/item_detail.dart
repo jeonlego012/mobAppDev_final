@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'model/item.dart';
 import 'model/item_transaction.dart';
-import 'login.dart';
 import 'item_edit.dart';
+import 'home.dart';
 
 class ItemDetailPage extends StatefulWidget {
   final String _itemId;
@@ -58,14 +57,16 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           title: Text("Delete?"),
           content: Text("Do you want to delete?"),
           actions: [
-            Consumer<ApplicationState>(
-              builder: (context, appState, _) => FlatButton(
-                child: Text("YES"),
-                onPressed: () {
-                  // appState.deleteItemFromFirestore(widget.item.id);
-                  // appState.deleteImageFromStorage(widget.item.name);
-                },
-              ),
+            FlatButton(
+              child: Text("YES"),
+              onPressed: () {
+                deleteItem(_item.id);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                  (Route<dynamic> route) => false,
+                );
+              },
             ),
             FlatButton(
                 child: Text("NO"),
@@ -161,41 +162,41 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Detail'),
-        actions: <Widget>[
-          // _firebaseAuth.currentUser.uid == _item.userId
-          //     ? IconButton(
-          //         icon: Icon(
-          //           Icons.edit,
-          //           semanticLabel: 'edit',
-          //         ),
-          //         onPressed: () {
-          //           // Navigator.push(
-          //           //   context,
-          //           //   MaterialPageRoute(
-          //           //       builder: (context) =>
-          //           //           ItemEditPage(item: widget.item)),
-          //           // );
-          //         },
-          //       )
-          //     : SizedBox(height: 1.0),
-          // _firebaseAuth.currentUser.uid == _item.userId
-          //     ? IconButton(
-          //         icon: Icon(
-          //           Icons.delete,
-          //           semanticLabel: 'delete',
-          //         ),
-          //         onPressed: () => showDeleteDialog(),
-          //       )
-          //     : SizedBox(height: 1.0),
-        ],
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView(
+    return _isLoading
+        ? Scaffold(body: Center(child: CircularProgressIndicator()))
+        : Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text('Detail'),
+              actions: <Widget>[
+                _firebaseAuth.currentUser.uid == _item.userId
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.edit,
+                          semanticLabel: 'edit',
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ItemEditPage(itemId: widget._itemId)),
+                          );
+                        },
+                      )
+                    : SizedBox(height: 1.0),
+                _firebaseAuth.currentUser.uid == _item.userId
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          semanticLabel: 'delete',
+                        ),
+                        onPressed: () => showDeleteDialog(),
+                      )
+                    : SizedBox(height: 1.0),
+              ],
+            ),
+            body: ListView(
               children: [
                 imageSection(),
                 nameSection(),
@@ -204,7 +205,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 dataSection(),
               ],
             ),
-    );
+          );
   }
 
   Divider _buildDivider() {

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//typedef ItemPressedCallback = void Function(String itemId, String userId);
-
 class Item {
   final String id;
   final String userId;

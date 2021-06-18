@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +21,6 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'home.dart';
 
@@ -108,10 +106,7 @@ class ApplicationState extends ChangeNotifier {
       if (user == null) {
         loggedIn = false;
         print('User is signed out!');
-        //_items = [];
-        //_itemSubscription.cancel();
       } else {
-        //_items = [];
         loggedIn = true;
         print('User is signed in! ${user.email}');
       }
@@ -142,111 +137,5 @@ class ApplicationState extends ChangeNotifier {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     notifyListeners();
-  }
-
-  Future<void> addItemToFirestore(
-      String itemName, int itemPrice, String itemDescription) {
-    return FirebaseFirestore.instance.collection('items').add({
-      'name': itemName,
-      'price': itemPrice,
-      'description': itemDescription,
-      'creation_time': FieldValue.serverTimestamp(),
-      'recent_update_time': null,
-      'author': FirebaseAuth.instance.currentUser.uid,
-      'like_users': <dynamic>[],
-    }).then((value) {
-      print("Item added to firestore $value");
-      notifyListeners();
-    }).catchError((error) => print("Failed to add item: $error"));
-  }
-
-  Future<void> editItemFromFirestore(
-      String itemId, String itemName, int itemPrice, String itemDescription) {
-    return FirebaseFirestore.instance.collection('items').doc(itemId).update({
-      'name': itemName,
-      'price': itemPrice,
-      'description': itemDescription,
-      'recent_update_time': FieldValue.serverTimestamp(),
-    }).then((value) {
-      print("Item edited to firestore");
-      notifyListeners();
-    }).catchError((error) => print("Filed to edit item: $error"));
-  }
-
-  Future<void> deleteItemFromFirestore(String itemId) {
-    return FirebaseFirestore.instance
-        .collection('items')
-        .doc(itemId)
-        .delete()
-        .then((value) {
-      print("Item edited to firestore");
-      notifyListeners();
-    }).catchError((error) => print("Filed to edit item: $error"));
-  }
-
-  Future<void> addImageToStorage(String imageName, File image) async {
-    firebase_storage.SettableMetadata metadata =
-        firebase_storage.SettableMetadata(
-      customMetadata: <String, String>{
-        'authorId': FirebaseAuth.instance.currentUser.uid,
-      },
-    );
-    await firebase_storage.FirebaseStorage.instance
-        .ref(imageName)
-        .putFile(image, metadata)
-        .then((value) {
-      print("Item added to storage $value");
-      notifyListeners();
-    }).catchError((error) => print("Failed to add image: $error"));
-  }
-
-  Future<void> editImageFromStorage(String previous, String previousImagePath,
-      String imageName, File image) async {
-    firebase_storage.SettableMetadata metadata =
-        firebase_storage.SettableMetadata(
-      customMetadata: <String, String>{
-        'authorId': FirebaseAuth.instance.currentUser.uid,
-      },
-    );
-    if (image != null) {
-      await firebase_storage.FirebaseStorage.instance
-          .ref(previous)
-          .delete()
-          .then((value) {
-        print("Item deleted from storage");
-        notifyListeners();
-      }).catchError((error) => print("Failed to delete image: $error"));
-      await firebase_storage.FirebaseStorage.instance
-          .ref(imageName)
-          .putFile(image, metadata)
-          .then((value) {
-        print("Item added to storage $value");
-        notifyListeners();
-      }).catchError((error) => print("Failed to add image: $error"));
-    } else {
-      await firebase_storage.FirebaseStorage.instance
-          .ref(imageName)
-          .putFile(File(previousImagePath), metadata)
-          .then((value) {
-        print("Item added to storage $value");
-        notifyListeners();
-      }).catchError((error) => print("Failed to add image: $error"));
-      await firebase_storage.FirebaseStorage.instance
-          .ref(previous)
-          .delete()
-          .then((value) {
-        print("Item deleted from storage");
-      }).catchError((error) => print("Failed to delete image: $error"));
-    }
-  }
-
-  Future<void> deleteImageFromStorage(String imageName) async {
-    await firebase_storage.FirebaseStorage.instance
-        .ref(imageName)
-        .delete()
-        .then((value) {
-      print("Item deleted from storage");
-      notifyListeners();
-    }).catchError((error) => print("Failed to delete image: $error"));
   }
 }
